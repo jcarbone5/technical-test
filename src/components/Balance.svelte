@@ -26,7 +26,7 @@
 
 		<button
 			on:click={toggleWalletConnection}
-			class="w-full rounded-sm bg-[#4D47C3] p-4 text-white transition-opacity duration-300 hover:opacity-80"
+			class="w-full rounded-sm bg-[#4D47C3] p-4 text-white shadow-lg transition-opacity duration-300 hover:opacity-80"
 		>
 			{$walletStore.isConnected ? `${$walletStore.address?.slice(0, 8)}...` : 'Connect your wallet'}
 		</button>

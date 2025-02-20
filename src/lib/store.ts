@@ -13,10 +13,16 @@ type Balance = {
 };
 
 export const connectWallet = async () => {
-	await connect(config, { connector: injected() });
-	walletStore.set(getAccount(config));
+	try {
+		await connect(config, { connector: injected() });
+		walletStore.set(getAccount(config));
 
-	toast.success('Wallet is connected!');
+		toast.success('Wallet is connected!');
+	} catch (error) {
+		if (error instanceof Error) {
+			toast.error(error.message);
+		}
+	}
 };
 
 export const disconnectWallet = async () => {
@@ -34,15 +40,22 @@ export const getBalance = async () => {
 	balanceStore.set({ balance: 0, loading: true });
 
 	try {
-		const balance = await readContract(config, {
+		const currentBalance = await readContract(config, {
 			address: usdtAddress,
 			abi: parseAbi(['function balanceOf(address _owner) view returns (uint256)']),
 			functionName: 'balanceOf',
 			args: [account.address]
 		});
 
-		balanceStore.set({ balance: Number(formatUnits(balance, 6)), loading: false });
-		toast.success('The balance was obtained successfully');
+		const balance = Number(formatUnits(currentBalance, 6));
+
+		balanceStore.set({ balance, loading: false });
+
+		if (balance > 0) {
+			toast.success('Balance obtained successfully');
+		} else {
+			toast.warning('You don’t have any USDT');
+		}
 	} catch (error) {
 		console.log(error);
 
