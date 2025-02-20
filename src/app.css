@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@import 'tailwindcss';
+
+@theme {
+	--font-poppins: 'Poppins', sans-serif;
+
+	--animate-slow-bounce: slow-bounce 3s ease-in-out infinite;
+	@keyframes slow-bounce {
+		0%,
+		100% {
+		transform: translateY(0)
+		}
+		50% {
+		transform: translateY(-10px)
+		}
+	}
+}
